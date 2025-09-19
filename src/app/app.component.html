@@ -1,0 +1,7 @@
+<div class="nav-bar">
+    <span routerLink="/home" [class]="{'hightlight':currentPath == 'home'}">Home</span>
+    <span routerLink="/skills" [class]="{'hightlight':currentPath == 'skills'}">Skills</span>
+    <span>Contactus</span>
+</div>
+<router-outlet />
+<mat-slide-toggle class="theme-switch" (change)="this.isLightTheme.set($event.checked);" [checked]="isLightTheme()">{{this.isLightTheme() ? 'Light theme' : 'Dark theme'}}</mat-slide-toggle>
