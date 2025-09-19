@@ -5,6 +5,34 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
 
+/**netlify start */
+  import { render } from '@netlify/angular-runtime/common-engine'
+
+  const commonEngine = new CommonEngine()
+
+  export async function netlifyCommonEngineHandler(request: Request, context: any): Promise<Response> {
+    return await render(commonEngine)
+  }
+  import { AngularAppEngine, createRequestHandler } from '@angular/ssr'
+  import { getContext } from '@netlify/angular-runtime/context'
+
+  const angularAppEngine = new AngularAppEngine()
+
+  export async function netlifyAppEngineHandler(request: Request): Promise<Response> {
+    const context = getContext()
+
+    const result = await angularAppEngine.handle(request, context)
+    return result || new Response('Not found', { status: 404 })
+  }
+
+  /**
+   * The request handler used by the Angular CLI (dev-server and during build).
+   */
+  export const reqHandler = createRequestHandler(netlifyAppEngineHandler)
+  /**netlify end */
+
+
+  
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
